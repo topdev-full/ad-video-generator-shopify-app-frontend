@@ -1,0 +1,488 @@
+/* CSS Variables for design system */
+:root {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(263, 70%, 50%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --primary-glow: hsl(263, 70%, 65%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --ring: hsl(263, 70%, 50%);
+  --gradient-primary: linear-gradient(135deg, hsl(263, 70%, 50%), hsl(220, 70%, 50%));
+  --gradient-card: linear-gradient(145deg, hsl(240, 10%, 4%), hsl(240, 8%, 6%));
+  --shadow-glow: 0 0 30px hsl(263, 70%, 50%, 0.3);
+  --shadow-card: 0 8px 32px hsl(240, 10%, 3%, 0.5);
+  --radius: 0.5rem;
+}
+
+/* Light theme */
+.light {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(240, 10%, 3.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(240, 10%, 3.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 10%, 3.9%);
+  --primary: hsl(263, 70%, 50%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --primary-glow: hsl(263, 70%, 65%);
+  --secondary: hsl(240, 4.8%, 95.9%);
+  --secondary-foreground: hsl(240, 5.9%, 10%);
+  --muted: hsl(240, 4.8%, 95.9%);
+  --muted-foreground: hsl(240, 3.8%, 46.1%);
+  --accent: hsl(240, 4.8%, 95.9%);
+  --accent-foreground: hsl(240, 5.9%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 5.9%, 90%);
+  --input: hsl(240, 5.9%, 90%);
+  --ring: hsl(263, 70%, 50%);
+  --gradient-primary: linear-gradient(135deg, hsl(263, 70%, 50%), hsl(220, 70%, 50%));
+  --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%), hsl(240, 5%, 98%));
+  --shadow-glow: 0 0 30px hsl(263, 70%, 50%, 0.2);
+  --shadow-card: 0 8px 32px hsl(240, 5%, 90%, 0.3);
+}
+
+/* Base styles */
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+body:has(.gallery) {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Video Gallery Container */
+.video-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Video Gallery Header */
+.video-gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.video-gallery-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.video-gallery-subtitle {
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.video-count-badge {
+  font-size: 1.125rem;
+  padding: 0.25rem 0.75rem;
+}
+
+/* Empty State */
+.empty-state-card {
+  padding: 3rem;
+  text-align: center;
+  background: var(--gradient-card);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius);
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem 0;
+  color: var(--foreground);
+}
+
+.empty-state-description {
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+/* Video Grid */
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Video Card */
+.video-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: var(--gradient-card);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+
+.video-card:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+/* Video Thumbnail */
+.video-thumbnail {
+  aspect-ratio: 16/9;
+  background-color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.video-thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Play Overlay */
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.play-overlay-visible {
+  opacity: 1;
+}
+
+.play-button {
+  border-radius: 50%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Indicator */
+.status-indicator {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.status-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Status Colors */
+.status-uploaded {
+  background-color: #14b8a6;
+}
+
+.status-uploading {
+  background-color: #22c55e;
+}
+
+.status-completed {
+  background-color: #3b82f6;
+}
+
+.status-processing {
+  background-color: #eab308;
+}
+
+.status-failed {
+  background-color: #ef4444;
+}
+
+.status-unknown {
+  background-color: #6b7280;
+}
+
+/* Actions Menu */
+.actions-menu {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.action-button {
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+}
+
+.action-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Video Info */
+.video-info {
+  padding: 1rem;
+}
+
+.video-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.75rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.video-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Card Component */
+.card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Button Component */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button:focus {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Button Variants */
+.button-default {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: var(--shadow-glow);
+}
+
+.button-default:hover {
+  background-color: hsl(263, 70%, 45%);
+}
+
+.button-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.button-secondary:hover {
+  background-color: hsl(240, 3.7%, 20%);
+}
+
+.button-outline {
+  border: 1px solid hsl(263, 70%, 50%, 0.2);
+  color: var(--primary);
+  background-color: transparent;
+}
+
+.button-outline:hover {
+  background-color: hsl(263, 70%, 50%, 0.1);
+  border-color: hsl(263, 70%, 50%, 0.4);
+}
+
+.button-ghost {
+  color: var(--foreground);
+  background-color: transparent;
+}
+
+.button-ghost:hover {
+  background-color: hsl(240, 3.7%, 20%);
+}
+
+.button-destructive {
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+.button-destructive:hover {
+  background-color: hsl(0, 84.2%, 55%);
+}
+
+/* Button Sizes */
+.button-default-size {
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.button-sm {
+  height: 2rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.button-lg {
+  height: 3rem;
+  padding: 0 2rem;
+}
+
+/* Badge Component */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  outline: none;
+}
+
+.badge:focus {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Badge Variants */
+.badge-default {
+  border-color: transparent;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.badge-default:hover {
+  background-color: hsl(263, 70%, 45%);
+}
+
+.badge-secondary {
+  border-color: transparent;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.badge-secondary:hover {
+  background-color: hsl(240, 3.7%, 20%);
+}
+
+.badge-destructive {
+  border-color: transparent;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+.badge-destructive:hover {
+  background-color: hsl(0, 84.2%, 55%);
+}
+
+.badge-outline {
+  color: var(--foreground);
+  border-color: var(--border);
+  background-color: transparent;
+}
+
+/* Icon styles */
+svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .video-gallery-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .video-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .actions-menu {
+    gap: 0.125rem;
+  }
+  
+  .action-button {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+}
