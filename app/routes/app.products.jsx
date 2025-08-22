@@ -9,7 +9,7 @@ import StyleOptionCard from "../components/StyleOptionCard";
 import { generateVideo } from "../api/api.js"; // Assuming you have an API module for generating videos
 import "../style/product.css";
 import "../style/gallery.css";
-import { AlignLeftIcon } from "lucide-react";
+import { BASE_URL } from "../api/api.js";
 
 const templates = [
   {
@@ -20,7 +20,7 @@ const templates = [
     prompt:
       "Create a spin video starting with a full-body front view of a person wearing this clothes. Begin with the front-facing image, then the model slowly rotates to reveal the back-facing view. Lighting should remain consistent and natural. Background should stay minimal and unobtrusive to keep focus on the clothing.Camera is on a tripod. Maintain consistent posture and scale between both angles. Clothing should appear realistic, with natural fabric movement where possible. Must show the full body all the time.",
     duration: "5s",
-    sampleVideo: "https://172.105.3.20/static/template-01.mp4",
+    sampleVideo: `${BASE_URL}/static/template-01.mp4`,
     style: "Realistic, clean, minimalistic, studio-lit, fashion catalog.",
   },
   {
@@ -30,7 +30,7 @@ const templates = [
     prompt:
       "The model should remain mostly still with minimal movement: gentle blinks, slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "5s",
-    sampleVideo: "https://172.105.3.20/static/template-02.mp4",
+    sampleVideo: `${BASE_URL}/static/template-02.mp4`,
     style:
       "Modern, calm, high-fashion, shallow depth of field, soft-lit, e-commerce editorial.",
   },
@@ -42,7 +42,7 @@ const templates = [
     prompt:
       "Use a subtle push-in movement on the camera. The model should remain mostly still with minimal movement: slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "5s",
-    sampleVideo: "https://172.105.3.20/static/template-03.mp4",
+    sampleVideo: `${BASE_URL}/static/template-03.mp4`,
     style:
       "Calm, modern, editorial, shallow depth of field, soft lighting, high-fashion, e-commerce-ready.",
   },
@@ -388,6 +388,13 @@ export default function ProductsPage() {
       navigate("/app/gallery");
     } catch (error) {
       const status = error?.response?.status;
+      if (status == 403) {
+        alert(
+          "You don't have enough credits to generate a video. Please purchase more credits.",
+        );
+        navigate("/app/credits");
+        return;
+      }
       if (status == 429) {
         alert("Too many requests. Please try again later.");
       } else {
@@ -505,47 +512,6 @@ export default function ProductsPage() {
                 </div>
               </Card>
 
-              {/* Selected Images */}
-              {productImages.length > 0 && (
-                <div className="selected-images-section">
-                  <h4 className="selected-images-title">
-                    Product Images ({productImages.length}) - Leave Up to 4
-                    images
-                  </h4>
-                  <div className="selected-images-grid">
-                    {productImages.map((image) => (
-                      <div key={image.id} className="selected-image-item">
-                        <Card className="selected-image-card">
-                          <div className="selected-image-container">
-                            <img
-                              src={image.url}
-                              alt={image.altText || "Product image"}
-                              className="selected-image"
-                            />
-                          </div>
-                          <p className="selected-image-alt">
-                            {image.altText || "Product image"}
-                          </p>
-                        </Card>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          className="remove-image-button"
-                          onClick={() => {
-                            const newImages = productImages.filter(
-                              (img) => img.id !== image.id,
-                            );
-                            setProductImages(newImages);
-                          }}
-                        >
-                          <XIcon />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="template-selector-container">
                 <div className="template-selector-header">
                   <h3 className="template-selector-title">
@@ -649,6 +615,47 @@ export default function ProductsPage() {
                   </Card>
                 )}
               </div>
+
+              {/* Selected Images */}
+              {productImages.length > 0 && selectedTemplate && (
+                <div className="selected-images-section">
+                  <h4 className="selected-images-title">
+                    Product Images ({productImages.length}) - Leave Up to 4
+                    images
+                  </h4>
+                  <div className="selected-images-grid">
+                    {productImages.map((image) => (
+                      <div key={image.id} className="selected-image-item">
+                        <Card className="selected-image-card">
+                          <div className="selected-image-container">
+                            <img
+                              src={image.url}
+                              alt={image.altText || "Product image"}
+                              className="selected-image"
+                            />
+                          </div>
+                          <p className="selected-image-alt">
+                            {image.altText || "Product image"}
+                          </p>
+                        </Card>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="remove-image-button"
+                          onClick={() => {
+                            const newImages = productImages.filter(
+                              (img) => img.id !== image.id,
+                            );
+                            setProductImages(newImages);
+                          }}
+                        >
+                          <XIcon />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {productImages.length > 0 && selectedTemplate && (
                 <div className="generate-section">

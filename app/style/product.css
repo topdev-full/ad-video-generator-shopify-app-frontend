@@ -924,3 +924,16 @@ body {
   }
 }
 
+.features li::before {
+  content: "✔";
+  left: -16px;
+  position: absolute;
+  font-weight: bold;
+}
+
+.features li {
+  margin-left: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  position: relative;
+}
