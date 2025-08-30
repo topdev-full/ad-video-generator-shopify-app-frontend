@@ -1,7 +1,7 @@
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 
-export const BASE_URL = "https://lookmotion.ai";
+export const BASE_URL = "https://lookmotion.ai:8000";
 const STRIPE_PUBLISHABLE_KEY =
   "pk_test_51PMV1x96qwFkAOsoeE7W8aqh6jt1xLiyc2X2eSZhPlGfIigxyfI2QxngI7W3H8QP9stvmeQgu8ABD543GpOaKtuP00sv1wWD3q";
 
