@@ -842,6 +842,7 @@ body {
   min-height: 80px;
   padding: 0.75rem;
   font-size: 0.875rem;
+  color: var(--foreground);
   background-color: var(--background);
   border: 1px solid var(--input);
   border-radius: var(--radius);

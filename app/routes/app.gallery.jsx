@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Page } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import "../style/gallery.css";
-import { useAppBridge } from "@shopify/app-bridge-react";
+import "../style/credits.css";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
@@ -13,6 +13,7 @@ import {
   deleteVideo,
   uploadVideo,
 } from "../api/api";
+import HoverVideo from "../components/HoverVideo";
 
 const PlayIcon = () => (
   <svg
@@ -383,24 +384,35 @@ export default function GalleryPage() {
               {videos.map((video) => (
                 <Card
                   key={video.id}
+                  style={{
+                    overflow: "visible",
+                  }}
                   className={`video-card ${hoveredVideo === video.id ? "video-card-hovered" : ""}`}
-                  onMouseEnter={() => setHoveredVideo(video.id)}
-                  onMouseLeave={() => setHoveredVideo(null)}
+                  onMouseEnter={(e) => {
+                    setHoveredVideo(video.id);
+                  }}
+                  onMouseLeave={(e) => {
+                    setHoveredVideo(null);
+                  }}
                 >
                   {/* Video Thumbnail */}
-                  <div className="video-thumbnail">
+                  <div
+                    className="video-thumbnail"
+                    style={{
+                      overflow: "visible",
+                    }}
+                  >
                     {video.thumbnail ? (
-                      <img
-                        src={`${guessMimeType(video.thumbnail)}${video.thumbnail}`}
-                        alt={video.id}
-                        className="video-thumbnail-image"
-                      />
+                      <HoverVideo video={video} />
                     ) : (
                       <FileVideoIcon />
                     )}
 
                     {/* Play overlay */}
                     <div
+                      style={{
+                        pointerEvents: "none",
+                      }}
                       className={`play-overlay ${hoveredVideo === video.id ? "play-overlay-visible" : ""}`}
                     >
                       <Button
@@ -413,7 +425,10 @@ export default function GalleryPage() {
                     </div>
 
                     {/* Status indicator */}
-                    <div className="status-indicator">
+                    <div
+                      className="status-indicator"
+                      style={{ pointerEvents: "none" }}
+                    >
                       <div className="status-content">
                         <div
                           className={`status-dot ${getStatusColor(video.status)}`}
@@ -425,33 +440,47 @@ export default function GalleryPage() {
                     </div>
 
                     {/* Actions menu */}
-                    <div className="actions-menu">
+                    <div
+                      className="actions-menu"
+                      style={{ pointerEvents: "auto" }}
+                    >
                       {video.status === "completed" && (
+                        <div className="tooltip">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="action-button"
+                            onClick={() => handleVideoUpload(video)}
+                          >
+                            <UploadIcon />
+                          </Button>
+                          <span className="tooltip-text">
+                            Upload To Shopify
+                          </span>
+                        </div>
+                      )}
+                      <div className="tooltip">
                         <Button
                           size="sm"
                           variant="ghost"
                           className="action-button"
-                          onClick={() => handleVideoUpload(video)}
+                          onClick={() => handleVideoDownload(video.video_url)}
                         >
-                          <UploadIcon />
+                          <DownloadIcon />
                         </Button>
-                      )}
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="action-button"
-                        onClick={() => handleVideoDownload(video.video_url)}
-                      >
-                        <DownloadIcon />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="action-button"
-                        onClick={() => handleVideoDelete(video.id)}
-                      >
-                        <TrashIcon />
-                      </Button>
+                        <span className="tooltip-text">Download</span>
+                      </div>
+                      <div className="tooltip">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="action-button"
+                          onClick={() => handleVideoDelete(video.id)}
+                        >
+                          <TrashIcon />
+                        </Button>
+                        <span className="tooltip-text">Delete</span>
+                      </div>
                     </div>
                   </div>
 
@@ -466,20 +495,6 @@ export default function GalleryPage() {
                         <CalendarIcon />
                         {video.createdAt}
                       </div>
-                    </div>
-
-                    <div className="video-actions">
-                      {video.status === "completed" && (
-                        <div className="action-buttons">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleVideoDownload(video.video_url)}
-                          >
-                            <DownloadIcon />
-                          </Button>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </Card>

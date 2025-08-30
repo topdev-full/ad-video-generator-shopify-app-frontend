@@ -261,13 +261,12 @@ body:has(.gallery) {
   height: 2rem;
   width: 2rem;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: var(--primary) !important;
   border: none;
 }
 
 .action-button:hover {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
 /* Video Info */

@@ -587,13 +587,12 @@ export default function ProductsPage() {
                         id="custom-prompt"
                         value={selectedTemplate.prompt}
                         onChange={(e) => {
-                          setCustomPrompt(e.target.value);
                           setSelectedTemplate({
                             ...selectedTemplate,
                             prompt: e.target.value,
                           });
                         }}
-                        placeholder="e.g., Retro 80s neon style with synthwave aesthetics and glowing effects..."
+                        placeholder="Type your own video idea. Ex: Model walking through rain wearing trench coat, moody lighting"
                         className="custom-prompt-textarea"
                       />
                     </div>
@@ -672,8 +671,8 @@ export default function ProductsPage() {
                       </>
                     ) : (
                       <>
-                        <VideoIcon />
-                        Generate Video
+                        <VideoIcon />   
+                        Create My Video
                       </>
                     )}
                   </Button>

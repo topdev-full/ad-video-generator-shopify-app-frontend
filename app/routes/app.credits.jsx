@@ -8,47 +8,48 @@ import { authenticate } from "../shopify.server.js";
 import { buyCredits, generateVideo, getCredits } from "../api/api.js"; // Assuming you have an API module for generating videos
 import "../style/product.css";
 import "../style/gallery.css";
+import "../style/credits.css";
 
 const templates = [
   {
     id: "template-1",
-    name: "100 Credits",
+    name: "100 Product Videos - $140",
     description:
       "Front-to-back model spin with stable camera and minimal background.",
     prompt:
       "Create a spin video starting with a full-body front view of a person wearing this clothes. Begin with the front-facing image, then the model slowly rotates to reveal the back-facing view. Lighting should remain consistent and natural. Background should stay minimal and unobtrusive to keep focus on the clothing.Camera is on a tripod. Maintain consistent posture and scale between both angles. Clothing should appear realistic, with natural fabric movement where possible. Must show the full body all the time.",
     duration: "$140",
     sampleVideo: "https://172.105.3.20/static/template-01.mp4",
-    style: "1 Month Available",
+    style: "Valid for 30 days",
   },
   {
     id: "template-2",
-    name: "250 Credits",
+    name: "250 Product Videos - $350",
     description: "Minimal model motion with soft lighting and editorial style.",
     prompt:
       "The model should remain mostly still with minimal movement: gentle blinks, slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "$350",
     sampleVideo: "https://172.105.3.20/static/template-02.mp4",
-    style: "1 Month Available",
+    style: "Valid for 30 days",
   },
   {
     id: "template-3",
-    name: "500 Credits",
+    name: "500 Product Videos - $700",
     description:
       "Subtle camera push-in on a still model with soft, modern aesthetic.",
     prompt:
       "Use a subtle push-in movement on the camera. The model should remain mostly still with minimal movement: slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "$700",
     sampleVideo: "https://172.105.3.20/static/template-03.mp4",
-    style: "1 Month Available",
+    style: "Valid for 30 days",
   },
   {
     id: "template-4",
-    name: "Custom",
+    name: "Custom Plan - Choose Your Number of Videos",
     description: "Create your own unique style with a custom prompt",
     prompt: "",
     duration: "$1.5 per credit",
-    style: "Always Available",
+    style: "Rollover supported",
   },
 ];
 
@@ -331,28 +332,28 @@ export default function ProductsPage() {
               {templates.map((template) => (
                 <Card
                   style={{
-                    cursor: `${template.id === "template-4" || creditStatus?.active_subscription === false ? "pointer" : "not-allowed"}`,
+                    cursor: `${template.id === "template-4" || !creditStatus?.active_subscription ? "pointer" : "not-allowed"}`,
                   }}
                   key={template.id}
                   className={`template-card ${selectedTemplate?.id === template.id ? "template-selected" : ""}`}
                   onMouseEnter={() => {
                     if (
                       template.id === "template-4" ||
-                      creditStatus?.active_subscription === false
+                      !creditStatus?.active_subscription
                     )
                       setHoveredTemplate(template.id);
                   }}
                   onMouseLeave={() => {
                     if (
                       template.id === "template-4" ||
-                      creditStatus?.active_subscription === false
+                      !creditStatus?.active_subscription
                     )
                       setHoveredTemplate(null);
                   }}
                   onClick={() => {
                     if (
                       template.id === "template-4" ||
-                      creditStatus?.active_subscription === false
+                      !creditStatus?.active_subscription
                     )
                       setSelectedTemplate(template);
                   }}
@@ -367,7 +368,14 @@ export default function ProductsPage() {
 
                   <div className="template-content">
                     <div className="template-info">
-                      <h4 className="template-name">{template.name}</h4>
+                      <div className="tooltip">
+                        <h4 className="template-name">{template.name}</h4>
+                        <span className="tooltip-text">
+                          {template.id === "template-4"
+                            ? "For bulk or agency needs, use the custom plan"
+                            : "1 credit = 1 video"}
+                        </span>
+                      </div>
                       <div className="template-badges">
                         <Badge variant="secondary">{template.duration}</Badge>
                       </div>
@@ -380,10 +388,8 @@ export default function ProductsPage() {
                           }}
                           className="features"
                         >
-                          <li>$1.4 per video</li>
                           <li>Fast-track generation</li>
                           <li>Professional mode</li>
-                          <li>One month available</li>
                         </ul>
                       ) : (
                         <ul
@@ -394,10 +400,8 @@ export default function ProductsPage() {
                           }}
                           className="features"
                         >
-                          <li>$1.5 per video</li>
                           <li>Fast-track generation</li>
                           <li>Professional mode</li>
-                          <li>One month available</li>
                         </ul>
                       )}
                       <div className="template-badges">
@@ -430,15 +434,8 @@ export default function ProductsPage() {
                     htmlFor="custom-prompt"
                     className="custom-prompt-label"
                   >
-                    Input the number of credits you want to buy:{" "}
-                    <span
-                      style={{
-                        fontStyle: "italic",
-                        fontSize: "16px",
-                      }}
-                    >
-                      Total ${1.5 * credits}
-                    </span>
+                    How many product videos do you want to generate?{" "}
+                    <span className="price">Total ${1.5 * credits}</span>
                   </label>
                   <input
                     id="custom-prompt"
@@ -463,7 +460,9 @@ export default function ProductsPage() {
                 <div className="selected-template-content">
                   <div>
                     <h4 className="selected-template-name">
-                      {selectedTemplate.name} Plan Selected
+                      {selectedTemplate.id === "template-4"
+                        ? `Custom Plan: ${credits} Product Videos Selected`
+                        : `${selectedTemplate.name} Plan Selected`}
                     </h4>
                   </div>
                 </div>
