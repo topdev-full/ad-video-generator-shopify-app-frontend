@@ -24,4 +24,4 @@ database.sqlite
 # Ignore shopify files created during app dev
 .shopify/*
 .shopify.lock
-.package-lock.json
+package-lock.json
