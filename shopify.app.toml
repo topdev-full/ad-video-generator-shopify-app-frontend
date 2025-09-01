@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "45510020c776f4d9e63fce17d2d9cf49"
+client_id = "6e91edf0bcc5ba4bcd43b010c32ffd9e"
 name = "ad-video-generator"
-handle = "ad-video-generator-1"
+handle = "ad-video-generator-2"
 application_url = "https://lookmotion.ai"
 embedded = true
 
@@ -26,7 +26,7 @@ api_version = "2025-07"
 scopes = "write_products,write_files"
 
 [auth]
-redirect_urls = ["https://lookmotion.ai/auth/callback", "https://lookmotion.ai/auth/shopify/callback", "https://lookmotion.ai/api/auth/callback"]
+redirect_urls = ["https://lookmotion.ai/auth/callback"]
 
 [pos]
 embedded = false
