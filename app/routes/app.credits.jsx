@@ -19,7 +19,7 @@ const templates = [
     prompt:
       "Create a spin video starting with a full-body front view of a person wearing this clothes. Begin with the front-facing image, then the model slowly rotates to reveal the back-facing view. Lighting should remain consistent and natural. Background should stay minimal and unobtrusive to keep focus on the clothing.Camera is on a tripod. Maintain consistent posture and scale between both angles. Clothing should appear realistic, with natural fabric movement where possible. Must show the full body all the time.",
     duration: "$140",
-    sampleVideo: "https://172.105.3.20/static/template-01.mp4",
+    sampleVideo: "https://lookmotion.ai/static/template-01.mp4",
     style: "Valid for 30 days",
   },
   {
@@ -29,7 +29,7 @@ const templates = [
     prompt:
       "The model should remain mostly still with minimal movement: gentle blinks, slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "$350",
-    sampleVideo: "https://172.105.3.20/static/template-02.mp4",
+    sampleVideo: "https://lookmotion.ai/static/template-02.mp4",
     style: "Valid for 30 days",
   },
   {
@@ -40,7 +40,7 @@ const templates = [
     prompt:
       "Use a subtle push-in movement on the camera. The model should remain mostly still with minimal movement: slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
     duration: "$700",
-    sampleVideo: "https://172.105.3.20/static/template-03.mp4",
+    sampleVideo: "https://lookmotion.ai/static/template-03.mp4",
     style: "Valid for 30 days",
   },
   {
@@ -275,7 +275,7 @@ export default function ProductsPage() {
   const handleGenerateVideo = async () => {
     try {
       console.log(window.location);
-      const redirectUrl = `https://admin.shopify.com/store/${shop.split(".")[0]}/apps/ad-video-generator-1/${window.location.pathname}${window.location.search}`;
+      const redirectUrl = `https://admin.shopify.com/store/${shop.split(".")[0]}/apps/ad-video-generator-2/${window.location.pathname}${window.location.search}`;
       console.log(redirectUrl);
       await buyCredits(shop, selectedTemplate.id, credits, redirectUrl);
     } catch (error) {
