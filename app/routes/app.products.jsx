@@ -28,7 +28,7 @@ const templates = [
     name: "Subtle Model Pose Loop",
     description: "Minimal model motion with soft lighting and editorial style.",
     prompt:
-      "The model should remain mostly still with minimal movement: gentle blinks, slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time.",
+      "The model should remain mostly still with minimal movement: gentle blinks, slight shifts of posture, subtle sway. Ensure the hands stay in place to reduce visual distractions. Keep the style modern, calm, and editorial. Maintain shallow depth of field and soft lighting to give a high-fashion, e-commerce-ready aesthetic. Must show the full body all the time. Avoid zoom-out before pushing in. Should start fully zoomed-in.",
     duration: "5s",
     sampleVideo: `${BASE_URL}/static/template-02.mp4`,
     style:
@@ -361,16 +361,24 @@ export default function ProductsPage() {
   }, [searchTerm, products]);
 
   const handleGenerateVideo = async () => {
-    if (productImages.length === 0) {
-      alert("Please upload at least one image");
-      return;
-    }
-    if (productImages.length > 4) {
-      alert("Please upload up to four images");
-      return;
-    }
     if (!selectedTemplate) {
       alert("Please select a template");
+      return;
+    }
+    if (selectedTemplate.id === "template-1" && productImages.length !== 2) {
+      alert("Please upload 2 images: front + back view");
+      return;
+    }
+    if (selectedTemplate.id === "template-2" && productImages.length !== 1) {
+      alert("Please upload 1 image (75% of outfit visible)");
+      return;
+    }
+    if (selectedTemplate.id === "template-3" && productImages.length !== 1) {
+      alert("Please upload 1 close-up image of fabric");
+      return;
+    }
+    if (selectedTemplate.id === "template-4" && (productImages.length <= 0 || productImages.length > 4)) {
+      alert("Please upload up to 4 images");
       return;
     }
     console.log(selectedProduct, selectedTemplate, productImages, shop);
@@ -619,8 +627,11 @@ export default function ProductsPage() {
               {productImages.length > 0 && selectedTemplate && (
                 <div className="selected-images-section">
                   <h4 className="selected-images-title">
-                    Product Images ({productImages.length}) - Leave Up to 4
-                    images
+                    {selectedTemplate.id === "template-1" ? "Upload 2 images: front + back view" : (
+                      selectedTemplate.id === "template-2" ? "Upload 1 image (75% of outfit visible)" : (
+                        selectedTemplate.id === "template-3" ? "Upload 1 close-up image of fabric" : "Upload up to 4 images"
+                      )
+                    )}
                   </h4>
                   <div className="selected-images-grid">
                     {productImages.map((image) => (
@@ -671,7 +682,7 @@ export default function ProductsPage() {
                       </>
                     ) : (
                       <>
-                        <VideoIcon />   
+                        <VideoIcon />
                         Create My Video
                       </>
                     )}

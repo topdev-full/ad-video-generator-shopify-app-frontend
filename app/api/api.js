@@ -16,13 +16,17 @@ export const generateVideo = async (productId, images, template, shop) => {
         product_id: productId.toString(),
         images: images.map((row) => row.url),
         shop: shop,
-      },
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
+      }
     );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const regenerateVideo = async (id) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/api/v1/regenerate/${id}`);
     return res;
   } catch (error) {
     throw error;
@@ -35,12 +39,7 @@ export const getCredits = async (shop) => {
       `${BASE_URL}/api/v1/credits`,
       {
         shop: shop,
-      },
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
+      }
     );
     return res;
   } catch (error) {
@@ -50,11 +49,7 @@ export const getCredits = async (shop) => {
 
 export const getVideoList = async (shop) => {
   try {
-    const res = await axios.get(`${BASE_URL}/api/v1/video?shop=${shop}`, {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
+    const res = await axios.get(`${BASE_URL}/api/v1/video?shop=${shop}`);
     return res;
   } catch (error) {
     throw error;
@@ -63,11 +58,7 @@ export const getVideoList = async (shop) => {
 
 export const updateVideo = async (id) => {
   try {
-    const res = await axios.put(`${BASE_URL}/api/v1/video/${id}`, {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
+    const res = await axios.put(`${BASE_URL}/api/v1/video/${id}`);
     return res;
   } catch (error) {
     throw error;
@@ -77,12 +68,7 @@ export const updateVideo = async (id) => {
 export const deleteVideo = async (id, shop, accessToken) => {
   try {
     const res = await axios.delete(
-      `${BASE_URL}/api/v1/video/${id}?shop=${shop}&token=${accessToken}`,
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
+      `${BASE_URL}/api/v1/video/${id}?shop=${shop}&token=${accessToken}`
     );
     return res;
   } catch (error) {
@@ -106,12 +92,7 @@ export const uploadVideo = async (
         video_id,
         video_url,
         product_id,
-      },
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
+      }
     );
     return res;
   } catch (error) {
@@ -128,12 +109,7 @@ export const buyCredits = async (shop, plan, credits, redirectUrl) => {
         plan,
         credits,
         redirectUrl,
-      },
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
+      }
     );
     const id = res.data.id;
     const stripe = await stripePromise;

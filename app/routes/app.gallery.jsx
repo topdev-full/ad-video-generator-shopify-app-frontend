@@ -12,6 +12,7 @@ import {
   updateVideo,
   deleteVideo,
   uploadVideo,
+  regenerateVideo,
 } from "../api/api";
 import HoverVideo from "../components/HoverVideo";
 
@@ -201,10 +202,10 @@ export async function loader({ request }) {
 
 export default function GalleryPage() {
   const { shop, accessToken } = useLoaderData();
-
+  const videosRef = useRef(videos);
   const [hoveredVideo, setHoveredVideo] = useState(null);
   const [videos, setVideos] = useState([]);
-  const videosRef = useRef(videos);
+  const [videoShow, setVideoShow] = useState(true);
 
   const handleVideoDelete = (id) => {
     try {
@@ -234,7 +235,18 @@ export default function GalleryPage() {
     console.log("Video download started");
   };
 
+  const handleRegenerate = async (video) => {
+    const data = [...videos];
+    data.find((row) => row.id === video.id).status = "processing";
+    setVideos(data);
+    await regenerateVideo(video.id);
+    await getVideo();
+  }
+
   const handleVideoUpload = async (video) => {
+    const data = [...videos];
+    data.find((row) => row.id === video.id).status = "uploading";
+    setVideos(data);
     await uploadVideo(
       shop,
       accessToken,
@@ -445,19 +457,34 @@ export default function GalleryPage() {
                       style={{ pointerEvents: "auto" }}
                     >
                       {video.status === "completed" && (
-                        <div className="tooltip">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="action-button"
-                            onClick={() => handleVideoUpload(video)}
-                          >
-                            <UploadIcon />
-                          </Button>
-                          <span className="tooltip-text">
-                            Upload To Shopify
-                          </span>
-                        </div>
+                        <>
+                          <div className="tooltip">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="action-button"
+                              onClick={() => handleVideoUpload(video)}
+                            >
+                              <UploadIcon />
+                            </Button>
+                            <span className="tooltip-text">
+                              Upload To Shopify
+                            </span>
+                          </div>
+                          <div className="tooltip">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="action-button"
+                              onClick={() => handleRegenerate(video)}
+                            >
+                              <UploadIcon />
+                            </Button>
+                            <span className="tooltip-text">
+                              Re-Generate
+                            </span>
+                          </div>
+                        </>
                       )}
                       <div className="tooltip">
                         <Button
