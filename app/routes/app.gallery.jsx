@@ -202,10 +202,11 @@ export async function loader({ request }) {
 
 export default function GalleryPage() {
   const { shop, accessToken } = useLoaderData();
-  const videosRef = useRef(videos);
   const [hoveredVideo, setHoveredVideo] = useState(null);
   const [videos, setVideos] = useState([]);
-  const [videoShow, setVideoShow] = useState(true);
+  const [videoShow, setVideoShow] = useState(false);
+  const videosRef = useRef(videos);
+  const videoShowRef = useRef(null);
 
   const handleVideoDelete = (id) => {
     try {
@@ -241,7 +242,7 @@ export default function GalleryPage() {
     setVideos(data);
     await regenerateVideo(video.id);
     await getVideo();
-  }
+  };
 
   const handleVideoUpload = async (video) => {
     const data = [...videos];
@@ -257,12 +258,16 @@ export default function GalleryPage() {
   };
 
   const handleVideoPlay = (video_url) => {
-    const link = document.createElement("a");
-    link.href = video_url;
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    console.log(video_url);
+    setVideoShow(true);
+    if (videoShowRef) {
+      console.log(videoShowRef);
+      videoShowRef.current.src = video_url;
+      videoShowRef.current.load();
+      videoShowRef.current.play().catch((err) => {
+        console.error("Video failed to play:", err);
+      });
+    }
   };
 
   const getStatusColor = (status) => {
@@ -299,13 +304,6 @@ export default function GalleryPage() {
     }
   };
 
-  // Utility function to guess MIME type from base64 string
-  const guessMimeType = (base64) => {
-    if (base64.startsWith("/9j/")) return "data:image/jpeg;base64,";
-    if (base64.startsWith("iVBOR")) return "data:image/png;base64,";
-    return "data:image/jpeg;base64,"; // default fallback
-  };
-
   // Utility function to get filename from URL
   function getFilenameFromUrl(url) {
     const parsedUrl = new URL(url);
@@ -323,8 +321,8 @@ export default function GalleryPage() {
         product_id: row.product_id,
         video_url: row.video_url,
         duration: row.duration,
-        createdAt: row.created_at.substr(0, 10),
         thumbnail: row.thumbnail,
+        createdAt: row.created_at.substr(0, 10),
         status: row.status,
       })),
     );
@@ -368,6 +366,59 @@ export default function GalleryPage() {
 
   return (
     <div className="gallery">
+        <div
+          style={{
+            position: "fixed",
+            visibility: `${videoShow ? "visible" : "hidden"}`,
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            zIndex: 30,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <button
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                zIndex: 20,
+                background: "rgba(0, 0, 0, 0.6)",
+                color: "#fff",
+                border: "none",
+                padding: "0.5rem 0.75rem",
+                cursor: "pointer",
+                fontSize: "1.2rem",
+              }}
+              onClick={() => setVideoShow(false)}
+            >
+              ✕
+            </button>
+            <video
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                background: "black",
+              }}
+              controls
+              ref={videoShowRef}
+            />
+          </div>
+        </div>
       <Page>
         <TitleBar title="Gallery page" />
         <div className="video-gallery">
@@ -400,6 +451,7 @@ export default function GalleryPage() {
                     overflow: "visible",
                   }}
                   className={`video-card ${hoveredVideo === video.id ? "video-card-hovered" : ""}`}
+                  onClick={() => handleVideoPlay(video.video_url)}
                   onMouseEnter={(e) => {
                     setHoveredVideo(video.id);
                   }}
@@ -430,7 +482,6 @@ export default function GalleryPage() {
                       <Button
                         size="lg"
                         className="play-button"
-                        onClick={() => handleVideoPlay(video.video_url)}
                       >
                         <PlayIcon />
                       </Button>
@@ -480,23 +531,23 @@ export default function GalleryPage() {
                             >
                               <UploadIcon />
                             </Button>
-                            <span className="tooltip-text">
-                              Re-Generate
-                            </span>
+                            <span className="tooltip-text">Re-Generate</span>
+                          </div>
+                          <div className="tooltip">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="action-button"
+                              onClick={() =>
+                                handleVideoDownload(video.video_url)
+                              }
+                            >
+                              <DownloadIcon />
+                            </Button>
+                            <span className="tooltip-text">Download</span>
                           </div>
                         </>
                       )}
-                      <div className="tooltip">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="action-button"
-                          onClick={() => handleVideoDownload(video.video_url)}
-                        >
-                          <DownloadIcon />
-                        </Button>
-                        <span className="tooltip-text">Download</span>
-                      </div>
                       <div className="tooltip">
                         <Button
                           size="sm"
